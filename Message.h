@@ -1,7 +1,7 @@
 /*
  * Message.h
  *
- *  Uses dedicated memory for data being sent and received. Messages are stored until no longer needed.
+ *  Uses dedicated memory for data being sent and received. Message data is stored until no longer needed.
  *
  */
 
@@ -9,7 +9,6 @@
 #define MESSAGE_H_
 
 #include "stdbool.h"
-#include "misc.h"
 
 /*  NOTES
  *
@@ -52,14 +51,17 @@
 
 #define TOTAL_MESSAGE_BUFFERS	MESSAGE_BUFF_COUNT_SMALL + MESSAGE_BUFF_COUNT_MEDIUM + MESSAGE_BUFF_COUNT_LARGE+ MESSAGE_BUFF_COUNT_XXL
 
+typedef union {
+    unsigned long int asLong;           // Represents Epoch time as 4 bytes or long int, Unions are Little Endian
+    unsigned char asBytes[4];
+}Epoch;
 
-
-/*~~~~~~~~~~~~~~~~~~~~~~WAY TO MAKE stuff more READABLE~~~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~~~~~~ WAY TO MAKE STUFF MORE READABLE ~~~~~~~~~~~~~~~~~~~~*/
 
 enum BufferSize{small = MESSAGE_BUFF_SIZE_SMALL, medium = MESSAGE_BUFF_SIZE_MEDIUM, large = MESSAGE_BUFF_SIZE_LARGE, xxl = MESSAGE_BUFF_SIZE_XXL};
 enum Sources{NONE, UART, SATin, SATout, XBEE}; // Add sources for your application i.e.: ACCEL, SPI, BLE, COMMS, RADIO, SATELLITE, I2C, or whatever you are interfacing with
 
-/*~~~~~~~~~~~~~~~~~GENERIC STRUCTURE FOR HOLDING MESSAGES~~~~~~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~~~~~ GENERIC STRUCTURE FOR HOLDING MESSAGES ~~~~~~~~~~~~~~~~~~*/
 typedef struct {
 
 	enum BufferSize bufferType;         // Buffer Size Enum
@@ -68,7 +70,7 @@ typedef struct {
 	int dataLength;                     // Length of data in buffer ( in bytes )
 	int expectedDataLength;             // Maybe you want this . . .
 	bool inUseFlag;                     // This flag drives the _getMessage() and _seekMessage() functions
-	EpochTime timestamp;                // Might not need, tack on Epoch Time if desired
+	Epoch timestamp;                    // Might not need, tack on Epoch Time if desired
 	enum Sources source;                // Describes where this message came from depending on application
 
 } Message;

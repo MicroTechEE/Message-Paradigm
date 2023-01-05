@@ -1,15 +1,14 @@
 /*
  * Message.c
  *
- *  Uses dedicated memory for data being sent and received. Messages are stored until no longer needed.
+ *  Uses dedicated memory for data being sent and received. Message data is stored until no longer needed.
  *
  */
 
 
-#include <msp430.h>
+#include <msp430.h>         // Update this for your Microcontroller
 #include <Message.h>
-#include "misc.h"
-#include <stdlib.h>  //for NULL
+#include <stdlib.h>
 #include <stdbool.h>
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~GLOBALS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
